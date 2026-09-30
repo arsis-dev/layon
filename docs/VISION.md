@@ -12,13 +12,12 @@ An ecologist imports field data. Layon understands it, derives predictions from 
 
 ## Early findings
 
-Measured with [Syntype](https://github.com/syntype/syntype), an open benchmark of tabular models on ecological data (grouped validation, domain and machine-learning baselines, leakage-audited targets):
+Measured with [Syntype](https://github.com/syntype/syntype), an open benchmark of tabular models on ecological data. Version 0.1 is a first pass: an independent review found issues that are being fixed (see the Syntype README), so these findings are provisional.
 
-- **Species traits** (8 traits from AusTraits, COMBINE, TetrapodTraits and AVONET; species or whole genera held out): Kumo Tabular, used without any training, is best on all 8 traits and in all 4 databases. Against CatBoost the median gain is +0.021 R² (8/8 traits, Wilcoxon p = 0.008, the smallest p possible with 8 traits); the edge narrows but holds when whole genera are held out (6/8). Taxonomy matters: removing genus, family and order drops some traits sharply (seed mass 0.82 → 0.55).
-- **Forest inventories** (11 tasks: allometry, growth, survival, mortality, distribution; plots or sites held out): the advantage is small and not significant; log-log allometry and gradient boosting win some tasks.
-- A light ecological fine-tuning of the small Kumo model (800 steps, leave-one-database-out) brought no measurable gain; model size mattered more.
+- **Species traits — a first signal on 4 databases.** On AusTraits, COMBINE, TetrapodTraits and AVONET, Kumo Tabular used without any training scored best on every trait tested, with species or whole genera held out. The evidence is limited: few independent targets (some overlap between databases), a row cap that favours in-context models, and no phylogenetic imputation baseline yet. It is a direction to test, not a general result.
+- **Forest inventories — inconclusive.** Several v0.1 forest tasks were ill-defined (harvest counted as mortality, modelled heights, near-identity growth targets). The suite is being rebuilt; no conclusion can be drawn yet.
 
-Trait imputation for poorly studied species is therefore the first use case worth validating with ecologists.
+Trait imputation for poorly studied species remains the first use case worth validating with ecologists.
 
 ## Principles
 
