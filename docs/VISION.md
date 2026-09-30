@@ -12,12 +12,13 @@ An ecologist imports field data. Layon understands it, derives predictions from 
 
 ## Early findings
 
-A first benchmark of 12 public ecological tasks (tree allometry, growth, survival, mortality, biomass, species distribution; Panama, China, Cambodia, Catalonia, Finland and Sweden, Madagascar, Oregon), with folds grouped by plot, site or species, 3 seeds × 5 folds, against tuned and domain baselines:
+Measured with [Syntype](https://github.com/syntype/syntype), an open benchmark of tabular models on ecological data (grouped validation, domain and machine-learning baselines, leakage-audited targets):
 
-- Kumo Tabular, used without training, has the best mean rank (2.33 over 12 tasks, CatBoost 3.33), **but its advantage over strong baselines is small and not statistically significant** (median gain +0.005 to +0.009; Wilcoxon p ≥ 0.2 against CatBoost, tuned gradient boosting, random forest and TabICLv2).
-- It helps most on small datasets and fails on some tasks: a simple log-log allometric model wins on crown area and boreal growth, and gradient boosting wins on tree survival.
-- This matches recent findings that tabular foundation models lose their edge under grouped (non-i.i.d.) validation. Whether taxonomy-aware preparation changes the picture, for instance for trait imputation, is the next question.
-- Apple Silicon (MPS) support for the underlying NVIDIA library is being contributed upstream ([NVIDIA/structured-data-models#1031](https://github.com/NVIDIA/structured-data-models/issues/1031)).
+- **Species traits** (8 traits from AusTraits, COMBINE, TetrapodTraits and AVONET; species or whole genera held out): Kumo Tabular, used without any training, is best on all 8 traits and in all 4 databases. Against CatBoost the median gain is +0.021 R² (8/8 traits, Wilcoxon p = 0.008, the smallest p possible with 8 traits); the edge narrows but holds when whole genera are held out (6/8). Taxonomy matters: removing genus, family and order drops some traits sharply (seed mass 0.82 → 0.55).
+- **Forest inventories** (11 tasks: allometry, growth, survival, mortality, distribution; plots or sites held out): the advantage is small and not significant; log-log allometry and gradient boosting win some tasks.
+- A light ecological fine-tuning of the small Kumo model (800 steps, leave-one-database-out) brought no measurable gain; model size mattered more.
+
+Trait imputation for poorly studied species is therefore the first use case worth validating with ecologists.
 
 ## Principles
 
